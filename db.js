@@ -1,6 +1,11 @@
 // backend/db.js
 const { Pool } = require('pg');
-require('dotenv').config();
+const path = require('path');
+const fs = require('fs');
+const dotenvPath = fs.existsSync(path.join(__dirname, '.env')) 
+  ? path.join(__dirname, '.env') 
+  : path.join(__dirname, '..', '.env');
+require('dotenv').config({ path: dotenvPath });
 
 const pool = new Pool(
   process.env.DATABASE_URL

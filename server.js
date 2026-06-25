@@ -1,5 +1,10 @@
 // backend/server.js
-require('dotenv').config();
+const path = require('path');
+const fs = require('fs');
+const dotenvPath = fs.existsSync(path.join(__dirname, '.env')) 
+  ? path.join(__dirname, '.env') 
+  : path.join(__dirname, '..', '.env');
+require('dotenv').config({ path: dotenvPath });
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
@@ -13,7 +18,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-const path = require('path');
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,6 +46,9 @@ app.use('/api/consultations', require('./routes/consultations'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/public', require('./routes/public'));
+app.use('/api/wishlist', require('./routes/wishlist'));
+app.use('/api/contact', require('./routes/contact'));
+app.use('/api/refunds', require('./routes/refunds'));
 
 // Simple health check
 app.get('/', (req, res) => res.send('MARUTIE Backend Running'));
